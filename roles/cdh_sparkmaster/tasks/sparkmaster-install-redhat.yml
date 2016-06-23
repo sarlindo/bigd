@@ -1,0 +1,3 @@
+---
+- name: install spark
+  yum: pkg=spark-core-{{spark_version}},spark-master-{{spark_version}} state=present

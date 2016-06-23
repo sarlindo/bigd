@@ -1,0 +1,17 @@
+- name: create cdh5 repo
+  copy: src={{ item }} dest=/etc/yum.repos.d/{{ item }} owner=root group=root mode=0644
+  with_items:
+  - cloudera-cdh.repo
+
+- name: add cdh5 repo key
+  get_url: url=http://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/RPM-GPG-KEY-cloudera dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera owner=root group=root mode=0644
+
+#- name: Copy cloudera rpm file to server
+#  copy:
+#     src: files/{{ cloudera_rpm }}
+#     dest: /tmp/{{ cloudera_rpm }}
+
+#- name: Install cloudera rpm package.
+#  yum:
+#     name: /tmp/{{ cloudera_rpm }}
+#     state: present

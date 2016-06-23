@@ -1,0 +1,4 @@
+---
+- include: datanode-install-redhat.yml
+  tags: ["datanode","datanode:install"]
+  when: ansible_os_family == 'RedHat'

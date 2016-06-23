@@ -1,0 +1,12 @@
+---
+- name: test
+  hosts: all
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  tasks:
+  lineinfile:
+    dest: /etc/fstab
+    state: present
+    regexp: '^\/tmp'
+    line: '/tmp /var/tmp none bind 0 0'

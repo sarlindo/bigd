@@ -1,0 +1,11 @@
+---
+- name: Spark Masters
+  hosts: sparkmasters
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  serial: 1
+  roles:
+    - logrotate
+    - cdh_sparkmaster
+    - spark_nagios_monitor

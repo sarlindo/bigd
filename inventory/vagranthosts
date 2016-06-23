@@ -1,0 +1,40 @@
+# ZOOKEEPER DEPLOYMENT
+
+[zookeepers]
+node1
+node2
+
+# SPARK DEPLOYMENT
+
+[sparkmasters]
+node1
+node2
+
+[sparkworkers]
+node1
+node2
+
+# HADDOP DEPLOYMENT
+
+[journalnodes]
+node1
+node2
+
+[namenodes]
+node1
+node2
+
+[datanodes]
+node1
+node2
+
+[zeppelin]
+node1
+
+[vagrant:children]
+zookeepers
+sparkmasters
+sparkworkers
+journalnodes
+datanodes
+zeppelin

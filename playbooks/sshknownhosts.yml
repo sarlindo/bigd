@@ -1,0 +1,10 @@
+---
+- name: SSH Known Hosts
+  hosts: all
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  roles:
+    - sshknownhosts
+

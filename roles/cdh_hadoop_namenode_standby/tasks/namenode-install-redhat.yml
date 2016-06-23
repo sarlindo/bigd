@@ -1,0 +1,18 @@
+---
+- name: install hadoop-hdfs-namenode via yum
+  yum: name=hadoop-hdfs-namenode-{{hadoop_namenode_version}} state=installed
+
+- name: create the name node data directory
+  file: path={{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }} owner=hdfs group=hdfs state=directory
+
+- name: wait for the first namenode to come online
+  wait_for: host={{ hostvars[groups['namenodes'][0]].inventory_hostname }} port=50070
+
+- name: bootstrap the standby namenode
+  shell: creates={{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }}/.bootstrapped su - hdfs -c "hdfs namenode -bootstrapStandby"; touch {{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }}/.bootstrapped
+
+- name: install hadoop-hdfs-zkfc (Hadoop HDFS Zookeeper Failover Controller) via yum
+  yum: name=hadoop-hdfs-zkfc-{{hadoop_zkfc_version}} state=installed
+
+- name: start standby namenode
+  service: name=hadoop-hdfs-namenode state=restarted enabled=yes

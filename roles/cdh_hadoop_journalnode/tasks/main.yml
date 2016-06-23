@@ -1,0 +1,4 @@
+---
+- include: journalnode-install-redhat.yml
+  tags: ["journalnode","journalnode:install"]
+  when: ansible_os_family == 'RedHat'

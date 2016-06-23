@@ -1,0 +1,80 @@
+---
+- hosts: zookeepers
+  tasks:
+    - name: restarting zookeepers
+      service: name=zookeeper-server state=restarted
+      tags:
+        - zookeepers
+
+- hosts: sparkmasters
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+
+  serial: 1
+  tasks:
+    - name: restart spark masters
+      service: name=spark-master state=restarted
+      tags:
+        - sparkmasters:restart
+
+- hosts: sparkmasters
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: stop spark masters
+      service: name=spark-master state=stopped
+      tags:
+        - sparkmasters:stop
+
+- hosts: sparkworkers
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  
+  tasks:
+    - name: restart spark workers
+      service: name=spark-worker state=restarted
+      tags:
+        - sparkworkers
+
+- hosts: sparkworkers
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: restart spark workers
+      service: name=spark-worker state=stopped
+      tags:
+        - sparkworkers:stop
+
+- hosts: journalnodes
+  tasks:
+    - name: restart journal nodes
+      service: name=hadoop-hdfs-journalnode state=restarted
+      tags:
+        - journalnodes
+
+- hosts: namenodes
+  tasks:
+    - name: restart name nodes
+      service: name=hadoop-hdfs-namenode state=restarted
+      tags:
+        - namenodes
+
+- hosts: datanodes
+  tasks:
+    - name: restart data nodes
+      service: name=hadoop-hdfs-datanode state=restarted
+      tags:
+        - datanodes
+
+- hosts: namenodes
+  tasks:
+    - name: restart zkfc nodes
+      service: name=hadoop-hdfs-zkfc state=restarted
+      tags:
+        - zkfcnodes

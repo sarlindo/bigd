@@ -1,0 +1,8 @@
+---
+- name: Restart spark worker
+  service: name=spark-worker state=restarted
+
+- name: "some_handler"
+  shell: "echo has changed!"
+  when: "'ALIVE' not in {{ item }}"
+  with_items: "{{ webpage }}"

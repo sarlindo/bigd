@@ -1,0 +1,4 @@
+---
+- include: namenode-install-redhat.yml
+  tags: ["namenodeactive","namenodeactive:install"]
+  when: ansible_os_family == 'RedHat'

@@ -1,0 +1,43 @@
+---
+- group: name=zookeeper system=yes
+- user: name=zookeeper group=zookeeper system=yes
+
+- name: Change ownership on zookeeper directory.
+  file: path={{zookeeper_dir}} state=directory owner=zookeeper group=zookeeper recurse=yes
+- name: Create zookeeper data folder.
+  file: path={{zookeeper_data_dir}} state=directory recurse=yes owner=zookeeper group=zookeeper
+
+- name: Create zookeeper logs folder.
+  file: path={{zookeeper_log_dir}} state=directory recurse=yes owner=zookeeper group=zookeeper
+
+- name: Check if /etc/init exists
+  stat: path=/etc/init/
+  register: etc_init
+
+- name: Upstart script.
+  template: src=zookeeper.conf.j2 dest=/etc/init/zookeeper.conf
+  when: etc_init.stat.exists == true
+  notify:
+    - Restart zookeeper
+
+- name: Check if systemd exists
+  stat: path=/usr/lib/systemd/system/
+  register: systemd_check
+
+- name: Systemd script.
+  template: src=zookeeper.service.j2 dest=/usr/lib/systemd/system/zookeeper.service
+  when: systemd_check.stat.exists == true
+  notify:
+    - Restart zookeeper
+
+- name: Configure zookeeper
+  template: src=zoo.cfg.j2 dest={{ zookeeper_dir }}/conf/zoo.cfg owner=zookeeper group=zookeeper
+  notify:
+    - Restart zookeeper
+
+- name: initialize the zookeeper
+  command: service zookeeper-server init creates={{zookeeper_data_dir}}/myid --myid={{ hostvars[inventory_hostname].zookeeper_myid }}
+
+- name: Start zookeeper
+  service: name=zookeeper-server state=started
+

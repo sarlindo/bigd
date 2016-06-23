@@ -1,0 +1,10 @@
+---
+- include: playbooks/sshknownhosts.yml
+- include: playbooks/common.yml
+- include: playbooks/zookeeper.yml
+- include: playbooks/sparkmaster.yml
+- include: playbooks/sparkworker.yml
+- include: playbooks/journalnode.yml
+- include: playbooks/namenode.yml
+- include: playbooks/datanode.yml
+- include: playbooks/zeppelin.yml

@@ -1,0 +1,8 @@
+---
+- name: zeppelin
+  hosts: zeppelin
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - zeppelin

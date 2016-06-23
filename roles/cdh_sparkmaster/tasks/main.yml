@@ -1,0 +1,8 @@
+---
+- include: sparkmaster-install-redhat.yml
+  tags: ["sparkmaster","sparkmaster:install"]
+  when: ansible_os_family == 'RedHat'
+
+- include: sparkmaster-config-redhat.yml
+  tags: ["sparkmaster","sparkmaster:config"]
+  when: ansible_os_family == 'RedHat'

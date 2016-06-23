@@ -1,0 +1,49 @@
+# ZOOKEEPER DEPLOYMENT
+
+[zookeepers]
+server01
+server02
+server03
+
+# SPARK DEPLOYMENT
+
+[sparkmasters]
+server01
+server02
+server03
+
+[sparkworkers]
+server01
+server02
+server03
+
+# HADDOP DEPLOYMENT
+
+[journalnodes]
+server01
+server02
+server03
+
+[namenodes]
+server01
+server02
+
+[datanodes]
+server01
+server02
+server03
+
+# NGX APP
+
+[ngxapp]
+server01
+server02
+server03
+
+
+[dev:children]
+zookeepers
+sparkmasters
+sparkworkers
+journalnodes
+datanodes

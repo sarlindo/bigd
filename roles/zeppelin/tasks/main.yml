@@ -1,0 +1,8 @@
+---
+- include: zeppelin-install-redhat.yml
+  tags: ["zeppelin","zeppelin:install"]
+  when: ansible_os_family == 'RedHat'
+
+- include: zeppelin-config-redhat.yml
+  tags: ["zeppelin","zeppelin:config"]
+  when: ansible_os_family == 'RedHat'

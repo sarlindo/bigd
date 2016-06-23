@@ -1,0 +1,27 @@
+---
+#- name: Download Oracle RPM
+#  get_url:
+#    url={{ java_oracle_rpm_url }}
+#    dest=/tmp
+#    headers='Cookie:gpw_e24=xxx;oraclelicense=accept-securebackup-cookie'
+
+- name: Copy jdk rpm file to server
+  copy:
+     src: files/{{ java_oracle_rpm }}
+     dest: /tmp/{{ java_oracle_rpm }}
+
+- name: Install oracle jdk rpm package.
+  yum:
+     name: /tmp/{{ java_oracle_rpm }}
+     state: present
+
+- name: set Java version as default
+  alternatives:
+    name="{{ item.exe }}"
+    link="/usr/bin/{{ item.exe }}"
+    path="{{ item.path }}/{{ item.exe }}"
+  with_items:
+    - { path: "{{ java_oracle_java_home }}/jre/bin", exe: 'java' }
+    - { path: "{{ java_oracle_java_home }}/jre/bin", exe: 'keytool' }
+    - { path: "{{ java_oracle_java_home }}/bin", exe: 'javac' }
+    - { path: "{{ java_oracle_java_home }}/bin", exe: 'javadoc' }

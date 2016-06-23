@@ -1,0 +1,8 @@
+---
+- include: logrotate-install-redhat.yml
+  tags: ["logrotate","logrotate:install"]
+  when: ansible_os_family == 'RedHat'
+
+- include: logrotate-config-redhat.yml
+  tags: ["logrotate","logrotate:config"]
+  when: ansible_os_family == 'RedHat'

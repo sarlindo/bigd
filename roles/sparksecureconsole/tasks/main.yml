@@ -1,0 +1,15 @@
+---
+
+- name: Create spark conf directory
+  file: path=/etc/spark/conf state=directory
+
+- name: Create spark lib directory
+  file: path=/usr/lib/spark/lib state=directory
+
+- name: Add Spark Console Authentication File
+  template: src=sparkauth.properties.j2 dest=/etc/spark/conf/sparkauth.properties
+
+- name: Copy Spark Secure Console Basic Auth to Spark Server
+  copy:
+     src: files/secure-spark-console.jar
+     dest: /usr/lib/spark/lib/

@@ -1,0 +1,8 @@
+---
+- name: Nagios Plugins
+  hosts: sparkmasters
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - spark_nagios_monitor

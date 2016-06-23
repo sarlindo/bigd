@@ -1,0 +1,16 @@
+---
+- name: Name Node Active
+  hosts: namenodes[0]
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - cdh_hadoop_namenode_active
+
+- name: Name Node StandBy
+  hosts: namenodes[1]
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - cdh_hadoop_namenode_standby

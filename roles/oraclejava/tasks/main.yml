@@ -1,0 +1,4 @@
+---
+- include: oraclejava-install-redhat.yml
+  tags: ["oraclejava","oraclejava:install"]
+  when: ansible_os_family == 'RedHat'

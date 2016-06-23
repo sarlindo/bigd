@@ -1,0 +1,80 @@
+# Global parameters
+##
+
+## Log Rotate for SPARK logs
+
+logrotate_scripts:
+  - name: spark
+    path: /var/log/spark/*.*
+    options:
+      - daily
+      - compress
+      - rotate 14
+      - missingok
+      - copytruncate
+      - delaycompress
+      - dateext
+      - dateformat -%Y%m%d
+
+cloudera_rpm: cloudera-cdh-5-0.x86_64.rpm
+
+java_oracle_java_dir_source: '/usr/local/src'
+java_oracle_java_set_as_default: no
+java_oracle_java_version: 8
+java_oracle_java_version_update: 91
+java_oracle_java_version_build: '02'
+java_oracle_java_version_string: "1.{{ java_oracle_java_version }}.0_{{ java_oracle_java_version_update }}"
+java_oracle_java_home: "/usr/java/jdk1.{{ java_oracle_java_version }}.0_{{ java_oracle_java_version_update }}"
+java_oracle_java_os_supported: yes
+java_oracle_rpm: jdk-8u91-linux-x64.rpm
+java_oracle_rpm_url: http://download.oracle.com/otn-pub/java/jdk/8u74-b02/jdk-8u91-linux-x64.rpm
+
+hadoop_site_name: devcluster
+hadoop_journalnode_version: 2.6.0+cdh5.7.0+1280
+hadoop_namenode_version: 2.6.0+cdh5.7.0+1280
+hadoop_zkfc_version: 2.6.0+cdh5.7.0+1280
+hadoop_datanode_version: 2.6.0+cdh5.7.0+1280
+hadoop_dfs_dir_parent: /data/hadoop
+hadoop_dfs_dir_nn: /nn
+hadoop_dfs_dir_jn: /jn
+hadoop_dfs_dir_dn: [ /data/hadoop/dn, /data01/hadoop/dn, /data02/hadoop/dn ]
+hadoop_dfs_blocksize: 268435456
+hadoop_max_xcievers: 4096
+hadoop_heapsize: 12278
+
+spark_workermemory: 16g
+spark_drivermemory: 3g
+spark_daemonmemory: 1g
+spark_location: /usr/lib/spark
+spark_webui: 8080
+spark_version: 1.6.0+cdh5.7.0+180
+spark_dir: /etc/spark
+spark_standalonemaster: "{{ hostvars[groups['sparkmasters'][0]].inventory_hostname }}"
+spark_recoverymode: ZOOKEEPER
+spark_tmp_dir: /app/cdh/spark/tmp
+zookeeper_client_port: 2181
+zookeeper_url: "{{ groups['zookeepers'] | join(':' + zookeeper_client_port|string + ',') }}:{{ zookeeper_client_port }}"  
+zookeeper_version: 3.4.5+cdh5.7.0+94
+zookeeper_init_limit: 5
+zookeeper_sync_limit: 2
+zookeeper_tick_time: 2000
+zookeeper_data_dir: /var/lib/zookeeper
+zookeeper_log_dir: /var/log/zookeeper
+zookeeper_dir: /etc/zookeeper
+
+zeppelin_dir: '/usr/local/zeppelin'
+zeppelin_log_dir: '/var/log/zeppelin'
+zeppelin_mem: '-Xmx2048m -XX:MaxPermSize=512m'
+zeppelin_java_home: '/usr/java/default'
+zeppelin_master: "spark://{{ hostvars[groups['sparkmasters'][0]].inventory_hostname }}:7077"
+zeppelin_hadoop_conf_dir: '/etc/hadoop/conf'
+zeppelin_server_port: '8091'
+zeppelin_spark_executor_instances: '20'
+zeppelin_spark_executor_cores: '1'
+zeppelin_spark_executor_memory: '2g'
+zeppelin_notebook_storage: 'org.apache.zeppelin.notebook.repo.VFSNotebookRepo'
+zeppelin_package_base_url: 'https://github.com/sarlindo/icp/releases/download/v0.6'
+zeppelin_package_name: 'zeppelin-v0.6'
+zeppelin_package_suffix: '.tar.gz'
+zeppelin_spark_home: '/usr/lib/spark'
+zeppelin_spark_yarn_jar: '/usr/lib/spark/lib/spark-assembly-1.6.0-cdh5.7.0-hadoop2.6.0-cdh5.7.0.jar'

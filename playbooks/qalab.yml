@@ -1,0 +1,14 @@
+---
+- name: QALAB
+  hosts: sparkmasters
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - oraclejava
+    - cdh_rpm
+  tasks:
+  - name: install spark
+    yum: pkg=spark-core-{{spark_version}} state=present
+  - name: update s3 creds
+    template: src=/home/vagrant/projects/icp/roles/ngxapp/templates/core-site.xml.j2 dest=/etc/hadoop/conf/core-site.xml

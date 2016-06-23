@@ -1,0 +1,16 @@
+---
+- name: prepare known_hosts entries
+  shell: ssh-keyscan -t rsa {{ item }}
+  with_items: "{{ groups['all'] }}"
+  register: keyscans
+  delegate_to: localhost
+
+- name: prepare known_hosts
+  lineinfile: 
+    dest=/home/arlindo/.ssh/known_hosts
+    create=yes
+    state=present
+    line="{{ item.stdout }}"
+    regexp="^{{ item.item }}"
+  with_items: "{{ keyscans.results }}"
+  delegate_to: localhost

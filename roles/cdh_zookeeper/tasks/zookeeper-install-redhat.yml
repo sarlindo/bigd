@@ -1,0 +1,3 @@
+---
+- name: install zookeeper
+  yum: pkg=zookeeper-{{zookeeper_version}},zookeeper-server-{{zookeeper_version}} state=present

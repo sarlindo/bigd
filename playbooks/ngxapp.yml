@@ -1,0 +1,9 @@
+---
+- name: NGX app
+  hosts: ngxapp
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: dnshostfile, when: "'vagrant' in group_names" }
+    - ngxapp

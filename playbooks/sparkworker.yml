@@ -1,0 +1,9 @@
+---
+- name: Spark Workers
+  hosts: sparkworkers
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - logrotate
+    - cdh_sparkworker

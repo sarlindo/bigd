@@ -1,0 +1,36 @@
+---
+- name: Add Spark Console Authentication File
+  template: src=sparkauth.properties.j2 dest=/etc/spark/conf/sparkauth.properties
+
+- name: Copy Spark Secure Console Basic Auth to Spark Server
+  copy:
+     src: files/secure-spark-console.jar
+     dest: /usr/lib/spark/lib/
+
+- name: Configure spark
+  template: src=spark-env.sh.j2 dest={{ spark_dir }}/conf/spark-env.sh
+  notify:
+    - Restart spark-master
+
+- name: Configure spark
+  template: src=spark-defaults.conf.j2 dest={{ spark_dir }}/conf/spark-defaults.conf
+  notify:
+    - Restart spark-master
+
+- name: Configure spark
+  template: src=log4j.properties.j2 dest={{ spark_dir }}/conf/log4j.properties
+  notify:
+    - Restart spark-master
+
+- name: Configure spark
+  template: src=log4j-driver.properties.j2 dest={{ spark_dir }}/conf/log4j-driver.properties
+  notify:
+    - Restart spark-master
+
+- name: Configure spark
+  template: src=log4j-executor.properties.j2 dest={{ spark_dir }}/conf/log4j-executor.properties
+  notify:
+    - Restart spark-master
+
+- name: Start Spark Master
+  service: name=spark-master state=started

@@ -1,0 +1,4 @@
+---
+- include: spark_nagios_monitor-config-redhat.yml
+  tags: ["spark_nagios_monitor", "spark_nagios_monitor:config"]
+  when: ansible_os_family == 'RedHat'

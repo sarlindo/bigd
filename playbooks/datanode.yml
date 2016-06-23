@@ -1,0 +1,10 @@
+---
+- name: Data Node
+  hosts: datanodes
+  remote_user: "{{ ansible_remoteuser }}"
+  become: yes
+  become_method: sudo
+  roles:
+    - cdh_hadoop_common
+    - cdh_hadoop_config
+    - cdh_hadoop_datanode

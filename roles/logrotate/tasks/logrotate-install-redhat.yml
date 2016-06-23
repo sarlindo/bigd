@@ -1,0 +1,3 @@
+---
+- name: Install logrotate
+  yum: pkg=logrotate state=present

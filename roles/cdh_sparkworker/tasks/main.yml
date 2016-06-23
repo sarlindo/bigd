@@ -1,0 +1,9 @@
+---
+- include: sparkworker-install-redhat.yml
+  tags: ["sparkworker","sparkworker:install"]
+  when: ansible_os_family == 'RedHat'
+
+- include: sparkworker-config-redhat.yml
+  tags: ["sparkworker","sparkworker:config"]
+  when: ansible_os_family == 'RedHat'
+

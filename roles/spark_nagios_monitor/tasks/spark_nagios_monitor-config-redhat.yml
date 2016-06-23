@@ -1,0 +1,64 @@
+---
+
+- name: Ensure git is installed
+  yum:
+     name: git
+     state: present
+
+
+- name: Ensure required Perl libraries are installed
+  yum: 
+     name: "{{ item }}"
+     state: present
+  with_items:
+      - "perl-TermReadKey"
+      - "perl-JSON"
+      - "perl-libwww-perl"
+      - "perl-Crypt-SSLeay"
+
+- name: config http.sslVerify false
+  command: git config --global http.sslVerify false
+
+- name: Git clone nagios check log files
+  git: 
+     repo: https://git.lab.tsx.com/tmx/nagios_check_logfiles.git
+     accept_hostkey: yes
+     dest: /usr/lib64/nagios/plugins/nagios_check_logfiles
+     force: yes
+
+- name: ensure check_logfiles permissions are correct
+  file: 
+    path: /usr/lib64/nagios/plugins/nagios_check_logfiles/check_logfiles
+    mode: 0775
+ 
+- name: Git clone spark nagios plugins
+  git:
+     repo: https://git.lab.tsx.com/tmx/spark-nagios-plugins.git
+     accept_hostkey: yes 
+     dest: /usr/lib64/nagios/plugins/spark-nagios-plugins
+     force: yes 
+
+- name: Copy configuration files for log monitoring
+  copy: 
+     src: "{{ item }}" 
+     dest: /usr/lib64/nagios/plugins/nagios_check_logfiles/cfg
+  with_items:
+      - "spark_check_worker_log.cfg"
+      - "spark_check_master_log.cfg"
+      - "spark_check_executor_log.cfg"
+      - "spark_check_driver_log.cfg"
+
+- name: Copy nagios configuration file
+  copy:
+     src: "{{ item }}"
+     dest: /etc/nrpe.d
+  with_items:
+      - "spark.cfg"
+
+- name: Configure cred.conf
+  template: 
+     src: cred.conf.j2 
+     dest: /usr/lib64/nagios/plugins/spark-nagios-plugins/cred.conf
+     owner: nrpe 
+     group: nrpe
+     mode: 0700

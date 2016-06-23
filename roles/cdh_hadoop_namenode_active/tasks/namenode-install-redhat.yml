@@ -1,0 +1,21 @@
+---
+- name: install hadoop-hdfs-namenode via yum
+  yum: name=hadoop-hdfs-namenode-{{hadoop_namenode_version}} state=present
+
+- name: create the name node data directory
+  file: path={{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }} owner=hdfs group=hdfs state=directory
+
+- name: format the namenode - WILL NOT FORMAT IF  current/VERSION EXISTS TO AVOID DATA LOSS
+  command: creates={{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }}/current/VERSION su - hdfs -c "hdfs namenode -format -force"
+
+- name: install hadoop-hdfs-zkfc (Hadoop HDFS Zookeeper Failover Controller) via yum
+  yum: name=hadoop-hdfs-zkfc-{{hadoop_zkfc_version}} state=present
+
+- name: format hadoop-hdfs-zkfc
+  shell: creates={{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }}/.zkfsformatted hdfs zkfc -formatZK -force; touch {{ hadoop_dfs_dir_parent  }}{{ hadoop_dfs_dir_nn }}/.zkfsformatted
+
+- name: start zkfc
+  service: name=hadoop-hdfs-zkfc state=restarted enabled=yes
+
+- name: start primary namenode
+  service: name=hadoop-hdfs-namenode state=restarted enabled=yes

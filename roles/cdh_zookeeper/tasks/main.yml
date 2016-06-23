@@ -1,0 +1,9 @@
+---
+- include: zookeeper-install-redhat.yml
+  tags: ["zookeeper","zookeeper:install"]
+  when: ansible_os_family == 'RedHat'
+
+- include: zookeeper-config-redhat.yml
+  tags: ["zookeeper", "zookeeper:config"]
+  when: ansible_os_family == 'RedHat'
+
