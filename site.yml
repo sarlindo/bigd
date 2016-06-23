@@ -3,5 +3,4 @@
 - include: playbooks/zookeeper.yml
 - include: playbooks/sparkmaster.yml
 - include: playbooks/sparkworker.yml
-- include: playbooks/ngxapp.yml
 - include: playbooks/nagiosplugins.yml

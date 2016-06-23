@@ -1,5 +1,0 @@
----
-- include: ngxapp-config-redhat.yml
-  tags: ["ngxapp", "ngxapp:config"]
-  when: ansible_os_family == 'RedHat'
-
